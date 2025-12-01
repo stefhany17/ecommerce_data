@@ -5,7 +5,7 @@
 Este proyecto centraliza la información operativa de una empresa de e-commerce. Los datos provienen de una API externa que tiene información de **productos** y **compras** en formato JSON.  
 
 El flujo ETL (Extraer, Transformar, Cargar) incluye:  
-- **Extracción:** Consumo de los endpoints `/products` y `/purchases`.  
+- **Extracción:** Consumo de los endpoints products y purchases.  
 - **Transformación:** Limpieza de datos, normalización de productos y expansión de compras por producto, incluyendo el cálculo de descuentos y totales por compra.  
 - **Carga:** Inserción de los datos transformados en un Data Warehouse implementado en SQLite con un esquema relacional.
 
@@ -24,7 +24,7 @@ El flujo ETL (Extraer, Transformar, Cargar) incluye:
 
 
 - git clone https://github.com/stefhany17/ecommerce_data
-- cd 
+- cd ecommerce_data
 
 - Ejecuta el ETL. python main.py
 
