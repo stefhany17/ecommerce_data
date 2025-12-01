@@ -1,21 +1,19 @@
 # ETL de E-commerce: Centralización de Datos de Productos y Compras
 
 ## Descripción del proyecto
-Este proyecto centraliza la información operativa de una empresa de e-commerce. Los datos provienen de una API externa que expone información de **productos** y **compras** en formato JSON.  
+Este proyecto centraliza la información operativa de una empresa de e-commerce. Los datos provienen de una API externa que tiene información de **productos** y **compras** en formato JSON.  
 
-El flujo ETL (Extract, Transform, Load) incluye:  
+El flujo ETL (Extraer, Transformar, Cargar) incluye:  
 - **Extracción:** Consumo de los endpoints `/products` y `/purchases`.  
 - **Transformación:** Limpieza de datos, normalización de productos y expansión de compras por producto, incluyendo el cálculo de descuentos y totales por compra.  
-- **Carga:** Inserción de los datos transformados en un Data Warehouse implementado en SQLite con un esquema relacional que facilita análisis posteriores.
+- **Carga:** Inserción de los datos transformados en un Data Warehouse implementado en SQLite con un esquema relacional.
 
 ---
 ## Stack tecnológico
-- Lenguaje: Python 3.x
+- Lenguaje: Python 3.9
 - Base de datos: SQLite
 - Librerías: requests, datetime, collections, sqlite3
 - Formato de datos: JSON
-
----
 
 ---
 
@@ -23,17 +21,15 @@ El flujo ETL (Extract, Transform, Load) incluye:
 
 - Clona el repositorio y entra en la carpeta del proyecto:
 
-```bash
+
 - git clone <URL_DEL_REPOSITORIO>
 - cd <NOMBRE_DEL_PROYECTO>
 
-- pip install -r requirements.txt
-
 - Ejecuta el ETL. python main.py
 
-
-
 ## Arquitectura / Flujo ETL
+
+```bash
 
   ┌─────────────┐
   │ API Externa │
@@ -77,15 +73,16 @@ El flujo ETL (Extract, Transform, Load) incluye:
 
 .
 ├── main.py              # Orquestador ETL
+├── config.py            # Configuración de endpoints y DB
 ├── extract.py           # Extracción de datos desde API
 ├── transform.py         # Transformación y limpieza de datos
 ├── load.py              # Inserción de datos en SQLite
-├── config.py            # Configuración de endpoints y DB
-├── requirements.txt     # Librerías necesarias
 └── README.md
-
-
+```
 ## Script para crear tablas de destino 
+
+```bash
+
 
 -- Tabla de productos
 CREATE TABLE IF NOT EXISTS products (
@@ -116,5 +113,5 @@ CREATE TABLE IF NOT EXISTS purchase_products (
     FOREIGN KEY (product_id)  REFERENCES products(id)
 );
 
-
+```
 

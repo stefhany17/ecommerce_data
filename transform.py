@@ -3,22 +3,22 @@ from datetime import datetime
 from collections import Counter
 
 
-# -----------------------------
+
 # Products
-# -----------------------------
-def transformar_products(raw_products):
+
+def transformar_products(productos_api):
     productos_transformados = []
 
-    for p in raw_products:
+    for p in productos_api:
         pid = p.get("id")
         name = (p.get("name") or "").strip()
         description = (p.get("description") or "").strip()
         category = (p.get("category") or "").strip()
         created_at_str = p.get("createdAt")
 
-        price_raw = p.get("price")
+
         try:
-            price = float(price_raw)
+            price = float(p.get("price"))
         except (TypeError, ValueError):
             price = None
 
@@ -34,19 +34,20 @@ def transformar_products(raw_products):
     return productos_transformados
 
 
-# -----------------------------
 # Purchases
-# -----------------------------
-def transformar_purchases(raw_purchases):
-    compras_transformadas = []
 
-    for pur in raw_purchases:
-        pid = pur.get("id")
-        status = (pur.get("status") or "").strip()
-        cc_type = (pur.get("creditCardType") or "").strip()
-        cc_number = (pur.get("creditCardNumber") or "").strip()
-        purchase_date_str = pur.get("purchaseDate")
+def transformar_purchases(purchases_api):
+    purchases_transformadas = []
 
+    for purchase in purchases_api:
+        pid = purchase.get("id")
+        status = (purchase.get("status") or "").strip()
+        cc_type = (purchase.get("creditCardType") or "").strip()
+        cc_number = (purchase.get("creditCardNumber") or "").strip()
+        # Purchase date string
+        purchase_date_str = purchase.get("purchaseDate")
+
+        # Conversión de fecha
         purchase_date_dt = None
         if purchase_date_str:
             try:
@@ -54,24 +55,25 @@ def transformar_purchases(raw_purchases):
             except ValueError:
                 purchase_date_dt = None
 
-        products_list = pur.get("products", [])
+        # Lista de productos en la compra
+        productos = purchase.get("products", [])
 
-        compras_transformadas.append({
+        purchases_transformadas.append({
             "id": pid,
             "status": status,
             "creditCardType": cc_type,
             "creditCardNumber": cc_number,
             "purchaseDate": purchase_date_str,
             "purchaseDate_dt": purchase_date_dt,
-            "products": products_list,
+            "products": productos,
         })
 
-    return compras_transformadas
+    return purchases_transformadas
 
 
-# -----------------------------
-# Helpers para análisis
-# -----------------------------
+
+# Metodos
+
 def construir_mapa_productos(products):
     return {p["id"]: p for p in products}
 
@@ -85,6 +87,7 @@ def expandir_compras(purchases, products_by_id):
         status = pur["status"]
         productos_compra = pur.get("products", [])
 
+        # Cantidad comprada por producto
         ids = [item["id"] for item in productos_compra]
         cantidades = Counter(ids)
 
@@ -124,9 +127,18 @@ def expandir_compras(purchases, products_by_id):
     return filas
 
 
+
 def calcular_totales_por_compra(filas_expand):
     totales = {}
+
     for fila in filas_expand:
-        pid = fila["purchase_id"]
-        totales[pid] = totales.get(pid, 0.0) + fila["total_linea"]
-    return {pid: round(total, 2) for pid, total in totales.items()}
+        purchase_id = fila["purchase_id"]
+        total_linea = fila["total_linea"]
+
+        totales[purchase_id] = totales.get(purchase_id, 0.0) + total_linea
+
+    result = {}
+    for purchase_id, total in totales.items():
+        result[purchase_id] = round(total, 2)
+
+    return result
