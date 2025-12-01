@@ -23,8 +23,8 @@ El flujo ETL (Extraer, Transformar, Cargar) incluye:
 - Clona el repositorio y entra en la carpeta del proyecto:
 
 
-- git clone <URL_DEL_REPOSITORIO>
-- cd <NOMBRE_DEL_PROYECTO>
+- git clone https://github.com/stefhany17/ecommerce_data
+- cd 
 
 - Ejecuta el ETL. python main.py
 
