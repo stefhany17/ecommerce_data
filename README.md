@@ -26,7 +26,7 @@ El flujo ETL (Extraer, Transformar, Cargar) incluye:
 - git clone https://github.com/stefhany17/ecommerce_data
 - cd ecommerce_data
 
-- Ejecuta el ETL. python main.py
+- Ejecuta main.py para que el flujo ETL se ejecute. 
 
 ## Arquitectura / Flujo ETL
 
@@ -118,4 +118,5 @@ CREATE TABLE IF NOT EXISTS purchase_products (
 ## Capturas de pantalla del pipeline ejecutándose correctamente.
 ![Ejecución paso 1](images/1.png)
 ![Ejecución paso 2](images/2.png)
+Creacion de la data base
 ![Ejecución paso 3](images/3.png)
